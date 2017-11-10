@@ -89,14 +89,14 @@ public class IntSetLinkedListLockFree implements IntSet {
 	public void validate() {
 		java.util.Set<Integer> checker = new java.util.HashSet<>();
 		int previous_value = m_first.getValue();
-		Node node = getUnmarkedNext(m_first);
+		Node node = m_first.next.getReference();
 		int value = node.getValue();
 		while (value < Integer.MAX_VALUE) {
 			assert previous_value < value : "list is unordered: " + previous_value + " before " + value;
 			assert !checker.contains(value) : "list has duplicates: " + value;
 			checker.add(value);
 			previous_value = value;
-			node = getUnmarkedNext(node);
+			node = m_first.next.getReference();
 			value = node.getValue();
 		}
 		System.out.println("DEBUG: unmarked nodes = " + countUnmarkedNodes());
