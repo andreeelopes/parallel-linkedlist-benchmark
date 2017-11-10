@@ -11,7 +11,7 @@ public class IntSetLinkedListOptimisticPerNodeLock implements IntSet {
 
 	public class Node {
 		private final int m_value;
-		private Node m_next;
+		private volatile Node m_next;
 
 		private final ReentrantLock lock = new ReentrantLock();
 
