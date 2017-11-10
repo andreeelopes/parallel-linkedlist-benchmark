@@ -91,6 +91,7 @@ public class IntSetLinkedListLockFree implements IntSet {
 		int previous_value = m_first.getValue();
 		Node node = m_first.next.getReference();
 		int value = node.getValue();
+		System.out.println("unmarked nodes = " + countUnmarkedNodes());
 		while (value < Integer.MAX_VALUE) {
 			assert previous_value < value : "list is unordered: " + previous_value + " before " + value;
 			assert !checker.contains(value) : "list has duplicates: " + value;
@@ -147,7 +148,7 @@ public class IntSetLinkedListLockFree implements IntSet {
 
 	private int countUnmarkedNodes() {
 		int counter = 0;
-		Node node = getUnmarkedNext(m_first);
+		Node node = m_first;
 		boolean marked[] = {false};
 		while (node.getValue() < Integer.MAX_VALUE) {
 			node.next.get(marked);
