@@ -2,6 +2,8 @@ package cp.benchmark.intset;
 
 import java.util.concurrent.atomic.AtomicMarkableReference;
 
+import cp.benchmark.intset.IntSetLinkedListOptimisticPerNodeLock.Node;
+
 /**
  * @author Pascal Felber
  * @author Tiago Vale
@@ -87,14 +89,14 @@ public class IntSetLinkedListLockFree implements IntSet {
 	public void validate() {
 		java.util.Set<Integer> checker = new java.util.HashSet<>();
 		int previous_value = m_first.getValue();
-		Node node = m_first.next.getReference();
+		Node node = getUnmarkedNext(m_first);
 		int value = node.getValue();
 		while (value < Integer.MAX_VALUE) {
 			assert previous_value < value : "list is unordered: " + previous_value + " before " + value;
 			assert !checker.contains(value) : "list has duplicates: " + value;
 			checker.add(value);
 			previous_value = value;
-			node = node.next.getReference();
+			node = getUnmarkedNext(node);
 			value = node.getValue();
 		}
 	}
@@ -127,5 +129,18 @@ public class IntSetLinkedListLockFree implements IntSet {
 				curr = succ;
 			}
 		}
+	}
+	
+	private Node getUnmarkedNext(Node node) {
+		boolean marked[] = {false};
+		while (node.getValue() < Integer.MAX_VALUE) {
+			node.next.get(marked);
+			Node next = node.next.getReference();
+			
+			if(!marked[0])
+				return next;
+			node = next;
+		}
+		return node;
 	}
 }
