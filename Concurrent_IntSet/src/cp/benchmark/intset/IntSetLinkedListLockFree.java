@@ -37,7 +37,7 @@ public class IntSetLinkedListLockFree implements IntSet {
 	}
 
 	private final Node m_first;
-	
+
 	public IntSetLinkedListLockFree() {
 		Node max = new Node(Integer.MAX_VALUE);
 		Node min = new Node(Integer.MIN_VALUE, max);
@@ -99,6 +99,7 @@ public class IntSetLinkedListLockFree implements IntSet {
 			node = getUnmarkedNext(node);
 			value = node.getValue();
 		}
+		System.out.println("DEBUG: unmarked nodes = " + countUnmarkedNodes());
 	}
 
 	/**
@@ -130,17 +131,31 @@ public class IntSetLinkedListLockFree implements IntSet {
 			}
 		}
 	}
-	
+
 	private Node getUnmarkedNext(Node node) {
 		boolean marked[] = {false};
 		while (node.getValue() < Integer.MAX_VALUE) {
 			node.next.get(marked);
 			Node next = node.next.getReference();
-			
+
 			if(!marked[0])
 				return next;
 			node = next;
 		}
 		return node;
+	}
+
+	private int countUnmarkedNodes() {
+		int counter = 0;
+		Node node = getUnmarkedNext(m_first);
+		boolean marked[] = {false};
+		while (node.getValue() < Integer.MAX_VALUE) {
+			node.next.get(marked);
+			if(marked[0])
+				counter++;
+			node = node.next.getReference();
+		}
+
+		return counter;
 	}
 }
