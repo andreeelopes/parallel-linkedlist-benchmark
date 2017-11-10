@@ -1,5 +1,9 @@
 package cp.benchmark.intset;
 
+import java.util.concurrent.locks.ReentrantLock;
+
+import cp.benchmark.intset.IntSetLinkedListOptimisticPerNodeLock.Node;
+
 /**
  * @author Pascal Felber
  * @author Tiago Vale
@@ -7,104 +11,134 @@ package cp.benchmark.intset;
  */
 public class IntSetLinkedListLazyPerNodeLock implements IntSet {
 
-  public class Node {
-    private final int m_value;
-    private Node m_next;
+	public class Node {
+		private final int m_value;
+		private Node m_next;
+		private boolean marked;
 
-    public Node(int value, Node next) {
-      m_value = value;
-      m_next = next;
-    }
+		private final ReentrantLock lock = new ReentrantLock();
 
-    public Node(int value) {
-      this(value, null);
-    }
+		public Node(int value, Node next) {
+			m_value = value;
+			m_next = next;
+			marked = false;
+		}
 
-    public int getValue() {
-      return m_value;
-    }
+		public Node(int value) {
+			this(value, null);
+		}
 
-    public void setNext(Node next) {
-      m_next = next;
-    }
+		public int getValue() {
+			return m_value;
+		}
 
-    public Node getNext() {
-      return m_next;
-    }
-  }
+		public void setNext(Node next) {
+			m_next = next;
+		}
 
-  private final Node m_first;
+		public Node getNext() {
+			return m_next;
+		}
 
-  public IntSetLinkedListLazyPerNodeLock() {
-    Node min = new Node(Integer.MIN_VALUE);
-    Node max = new Node(Integer.MAX_VALUE);
-    min.setNext(max);
-    m_first = min;
-  }
+		public boolean getMarked() {
+			return marked;
+		}
 
-  public boolean add(int value) {
-    boolean result;
+		public void lock(){
+			lock.lock();
+		}
+		public void unlock(){
+			lock.unlock();
+		}
+	}
 
-    Node previous = m_first;
-    Node next = previous.getNext();
-    int v;
-    while ((v = next.getValue()) < value) {
-      previous = next;
-      next = previous.getNext();
-    }
-    result = v != value;
-    if (result) {
-      previous.setNext(new Node(value, next));
-    }
+	private final Node m_first;
 
-    return result;
-  }
+	public IntSetLinkedListLazyPerNodeLock() {
+		Node min = new Node(Integer.MIN_VALUE);
+		Node max = new Node(Integer.MAX_VALUE);
+		min.setNext(max);
+		m_first = min;
+	}
 
-  public boolean remove(int value) {
-    boolean result;
+	public boolean add(int value) {
+		boolean result;
+		while(true) {
+			Node previous = m_first;
+			Node next = previous.getNext();
+			int v;
+			while ((v = next.getValue()) < value) {
+				previous = next;
+				next = previous.getNext();
+			}
+			previous.lock();
+			next.lock();
+			result = v != value;
+			try {
+				if(validate(previous, next)) {
+					if (result) 
+						previous.setNext(new Node(value, next));
+					return result;
+				}
+			}finally {
+				previous.unlock();
+				next.unlock();
+			}
+		}
+	}
 
-    Node previous = m_first;
-    Node next = previous.getNext();
-    int v;
-    while ((v = next.getValue()) < value) {
-      previous = next;
-      next = previous.getNext();
-    }
-    result = v == value;
-    if (result) {
-      previous.setNext(next.getNext());
-    }
+	public boolean remove(int value) {
+		boolean result;
+		while(true) {
+			Node previous = m_first;
+			Node next = previous.getNext();
+			int v;
+			while ((v = next.getValue()) < value) {
+				previous = next;
+				next = previous.getNext();
+			}
+			previous.lock();
+			next.lock();
+			result = v == value;
+			try {
+				if(validate(previous, next)) {
+					if (result) 
+						previous.setNext(next.getNext());
+					return result;
+				}
+			}finally {
+				previous.unlock();
+				next.unlock();
+			}
+		}
 
-    return result;
-  }
 
-  public boolean contains(int value) {
-    boolean result;
+	}
 
-    Node previous = m_first;
-    Node next = previous.getNext();
-    int v;
-    while ((v = next.getValue()) < value) {
-      previous = next;
-      next = previous.getNext();
-    }
-    result = (v == value);
+	public boolean contains(int value) {
+		Node previous = m_first;
+		while (previous.getValue() < value) 
+			previous = previous.getNext();
 
-    return result;
-  }
+		return (previous.getValue() == value && !previous.getMarked());
+	}
 
-  public void validate() {
-    java.util.Set<Integer> checker = new java.util.HashSet<>();
-    int previous_value = m_first.getValue();
-    Node node = m_first.getNext();
-    int value = node.getValue();
-    while (value < Integer.MAX_VALUE) {
-      assert previous_value < value : "list is unordered: " + previous_value + " before " + value;
-      assert !checker.contains(value) : "list has duplicates: " + value;
-      checker.add(value);
-      previous_value = value;
-      node = node.getNext();
-      value = node.getValue();
-    }
-  }
+	public void validate() {
+		java.util.Set<Integer> checker = new java.util.HashSet<>();
+		int previous_value = m_first.getValue();
+		Node node = m_first.getNext();
+		int value = node.getValue();
+		while (value < Integer.MAX_VALUE) {
+			assert previous_value < value : "list is unordered: " + previous_value + " before " + value;
+			assert !checker.contains(value) : "list has duplicates: " + value;
+			checker.add(value);
+			previous_value = value;
+			node = node.getNext();
+			value = node.getValue();
+		}
+	}
+
+	private boolean validate(Node previous, Node next) {
+		return !previous.getMarked() && !next.getMarked() && previous.getNext() == next;
+	}
 }
