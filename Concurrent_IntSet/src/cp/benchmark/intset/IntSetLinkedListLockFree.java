@@ -97,10 +97,10 @@ public class IntSetLinkedListLockFree implements IntSet {
 			assert !checker.contains(value) : "list has duplicates: " + value;
 			checker.add(value);
 			previous_value = value;
-			node = m_first.next.getReference();
+			node = node.next.getReference();
 			value = node.getValue();
 		}
-		System.out.println("DEBUG: unmarked nodes = " + countUnmarkedNodes());
+		//System.out.println("DEBUG: unmarked nodes = " + countUnmarkedNodes());
 	}
 
 	/**
