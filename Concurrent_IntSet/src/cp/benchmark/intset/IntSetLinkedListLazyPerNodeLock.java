@@ -43,6 +43,10 @@ public class IntSetLinkedListLazyPerNodeLock implements IntSet {
 		public boolean getMarked() {
 			return marked;
 		}
+		
+		public void setMarked() {
+			marked = true;
+		}
 
 		public void lock(){
 			lock.lock();
@@ -102,8 +106,10 @@ public class IntSetLinkedListLazyPerNodeLock implements IntSet {
 			result = v == value;
 			try {
 				if(validate(previous, next)) {
-					if (result) 
+					if (result) {
 						previous.setNext(next.getNext());
+						next.setMarked();
+					}
 					return result;
 				}
 			}finally {
