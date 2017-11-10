@@ -34,14 +34,11 @@ public class IntSetLinkedListLockFree implements IntSet {
 		}
 	}
 
-
-
 	private final Node m_first;
 	
 	public IntSetLinkedListLockFree() {
-		Node min = new Node(Integer.MIN_VALUE);
 		Node max = new Node(Integer.MAX_VALUE);
-		min.next = new AtomicMarkableReference<Node>(max, false);
+		Node min = new Node(Integer.MIN_VALUE, max);
 		m_first = min;
 	}
 
@@ -52,8 +49,7 @@ public class IntSetLinkedListLockFree implements IntSet {
 			if(curr.getValue() == value)
 				return false;
 			else {
-				Node node = new Node(value);
-				node.next = new AtomicMarkableReference<Node>(curr, false);
+				Node node = new Node(value, curr);
 				if (pred.next.compareAndSet(curr, node, false, false))
 					return true;
 			}
