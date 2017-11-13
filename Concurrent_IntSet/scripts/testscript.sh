@@ -7,8 +7,9 @@ do
     do
         for i in 1 2 3 4 5 6 7 8 9 10
         do
-        	bash ./scripts/intset.sh 1000 $n %r >> results.txt        	
+        	bash ./scripts/intset.sh 10 $n $r >> results.txt        	
         done
+        echo "" >> results.txt
     done
 done
 echo "Test concluded."

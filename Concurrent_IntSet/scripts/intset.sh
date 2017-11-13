@@ -19,9 +19,6 @@ write_perc=${3:-50}
 value_range=262144
 initial_size=256
 
-echo "Running: "${java} -cp bin cp.benchmark.Driver -d ${duration} -w ${warmup} -n ${nr_threads} \
-                cp.benchmark.intset.Benchmark ${list_impl} \
-                -r ${value_range} -i ${initial_size} -w ${write_perc}""
 
 ${java} -cp bin cp.benchmark.Driver -d ${duration} -w ${warmup} -n ${nr_threads} \
                 cp.benchmark.intset.Benchmark ${list_impl} \

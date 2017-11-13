@@ -114,7 +114,7 @@ public class Driver {
 //    System.out.println("RESULTS:\n");
 //    System.out.println("  Warmup duration (ms) = " + (wend - wstart));
 //    System.out.println("  Test duration (ms)   = " + (tend - tstart));
-    System.out.println(steps / (tend - tstart));
+    System.out.print(steps / (tend - tstart) + " ");
 //    System.out.println("  Nb iterations        = " + steps);
 //    System.out.println("  Stats                = " + b.getStats(bt));
 //    for (int i = 0; i < bt.length; i++)
