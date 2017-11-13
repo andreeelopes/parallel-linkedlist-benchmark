@@ -5,7 +5,6 @@ declare -a arr=("Synchronized" "GlobalLock" "GlobalRWLock" "PerNodeLock" "Optimi
 
 for i in "${arr[@]}"
 do
-	rm "results_${arr[i]}.txt"
 	echo "$i"
 	#percentage of writes
 	for r in 50 10
@@ -16,10 +15,12 @@ do
 	    	#number of tries
 	        for j in 1 2 3 4 5
 	        do
-	        	bash ./scripts/intset.sh 10 $n $r $i >> "results_${arr[i]}.txt"       	
+	        	bash ./scripts/intset.sh 1 $n $r $i >> "results_$i.txt"       	
 	        done
-	        echo "" >> "results_${arr[i]}.txt"
+	        echo "" >> "results_$i.txt"
 	    done
 	done
+
 done
 echo "Test concluded."
+
