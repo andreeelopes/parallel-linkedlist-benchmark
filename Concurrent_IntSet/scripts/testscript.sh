@@ -1,7 +1,7 @@
 #!/bin/bash
 rm results.txt
 
-for r in 50 90
+for r in 50 10
 do
     for n in 1 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32
     do
