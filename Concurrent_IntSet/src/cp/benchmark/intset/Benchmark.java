@@ -51,11 +51,11 @@ public class Benchmark implements cp.benchmark.Benchmark {
       int elem = random.nextInt(m_range);
       if (m_set.add(elem)) m_checker[elem]++;
     }
-    System.out.println("Initial size        = " + initial);
-    System.out.println("Range               = " + m_range);
-    System.out.println("Write rate          = " + m_rate + "%");
-    System.out.println("List implementation = " + m_set.getClass().getSimpleName());
-    System.out.println();
+//    System.out.println("Initial size        = " + initial);
+//    System.out.println("Range               = " + m_range);
+//    System.out.println("Write rate          = " + m_rate + "%");
+//    System.out.println("List implementation = " + m_set.getClass().getSimpleName());
+//    System.out.println();
   }
 
   public cp.benchmark.BenchmarkThread createThread(int i, int nb) {

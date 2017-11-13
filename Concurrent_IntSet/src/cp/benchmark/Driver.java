@@ -58,13 +58,13 @@ public class Driver {
     for (int i = 0; i < t.length; i++)
       t[i] = new Thread(bt[i]);
 
-    System.out.print("Starting threads...");
+//    System.out.print("Starting threads...");
     for (int i = 0; i < t.length; i++) {
-      System.out.print(" " + i);
+//      System.out.print(" " + i);
       bt[i].setPhase(Benchmark.WARMUP_PHASE);
       t[i].start();
     }
-    System.out.println();
+//    System.out.println();
 
     long wstart = System.currentTimeMillis();
     try {
@@ -73,12 +73,12 @@ public class Driver {
     }
     long wend = System.currentTimeMillis();
 
-    System.out.print("End of warmup phase...");
+//    System.out.print("End of warmup phase...");
     for (int i = 0; i < bt.length; i++) {
-      System.out.print(" " + i);
+      //System.out.print(" " + i);
       bt[i].setPhase(Benchmark.TEST_PHASE);
     }
-    System.out.println();
+//    System.out.println();
 
     long tstart = System.currentTimeMillis();
     try {
@@ -87,37 +87,37 @@ public class Driver {
     }
     long tend = System.currentTimeMillis();
 
-    System.out.print("End of test phase...");
+//    System.out.print("End of test phase...");
     for (int i = 0; i < bt.length; i++) {
-      System.out.print(" " + i);
+      //System.out.print(" " + i);
       bt[i].setPhase(Benchmark.SHUTDOWN_PHASE);
     }
-    System.out.println();
+//    System.out.println();
 
-    System.out.println("Waiting for threads to finish...");
+//    System.out.println("Waiting for threads to finish...");
     for (int i = 0; i < t.length; i++) {
       try {
         t[i].join();
       } catch (InterruptedException e) {
       }
     }
-    System.out.println("All threads returned successfully");
+//    System.out.println("All threads returned successfully");
 
-    System.out.println("Validating...");
+//    System.out.println("Validating...");
     b.validate(bt);
-    System.out.println("Validated successfully");
+//    System.out.println("Validated successfully");
 
     int steps = 0;
     for (int i = 0; i < bt.length; i++)
       steps += bt[i].getSteps();
 
-    System.out.println("RESULTS:\n");
-    System.out.println("  Warmup duration (ms) = " + (wend - wstart));
-    System.out.println("  Test duration (ms)   = " + (tend - tstart));
-    System.out.println("  Throughput (ops/s)   = " + steps / (tend - tstart));
-    System.out.println("  Nb iterations        = " + steps);
-    System.out.println("  Stats                = " + b.getStats(bt));
-    for (int i = 0; i < bt.length; i++)
-      System.out.println("    " + i + " : " + bt[i].getSteps() + " (" + bt[i].getStats() + ")");
+//    System.out.println("RESULTS:\n");
+//    System.out.println("  Warmup duration (ms) = " + (wend - wstart));
+//    System.out.println("  Test duration (ms)   = " + (tend - tstart));
+    System.out.println(steps / (tend - tstart));
+//    System.out.println("  Nb iterations        = " + steps);
+//    System.out.println("  Stats                = " + b.getStats(bt));
+//    for (int i = 0; i < bt.length; i++)
+//      System.out.println("    " + i + " : " + bt[i].getSteps() + " (" + bt[i].getStats() + ")");
   }
 }
