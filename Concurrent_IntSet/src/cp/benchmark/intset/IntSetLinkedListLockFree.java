@@ -13,7 +13,7 @@ public class IntSetLinkedListLockFree implements IntSet {
 
 	public class Node {
 		private final int value;
-		public volatile AtomicMarkableReference<Node> next;
+		public AtomicMarkableReference<Node> next;
 
 		public Node(int value, Node next) {
 			this.value = value;

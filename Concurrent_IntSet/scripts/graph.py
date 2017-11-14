@@ -7,7 +7,7 @@ def split_contains_ratio(M, n_split):
     return M_to_plot
 
 def plot_contains_ratio(Sync, GL, RWL, PNL, OL, Lazy, Free, X, title, xlabel, titleToSave):
-    plt.figure(1, figsize = (12,8), frameon = False)
+    plt.figure(1, figsize = (12*1.5, 8*1.5), frameon = False)
     plt.title(title, fontsize = 30)
     plt.xlabel(xlabel, fontsize = 15)
     
