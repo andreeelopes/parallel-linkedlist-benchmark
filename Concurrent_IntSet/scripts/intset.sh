@@ -1,5 +1,5 @@
 #!/bin/sh 
-java="java -enableassertions -verbose:gc -Xms1024M"
+java="java -enableassertions -Xms1024M"
 
 warmup=2000
 duration=${1}
