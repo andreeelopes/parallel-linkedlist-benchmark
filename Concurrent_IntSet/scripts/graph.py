@@ -1,8 +1,32 @@
-
-
 import numpy as np
 import matplotlib.pyplot as plt
 
+def split_contains_ratio(M, n_split):
+    M_mean = np.mean(M, axis = 1)
+    M_to_plot = np.split(M_mean, n_split)
+    return M_to_plot
+
+def plot_contains_ratio(Sync, GL, RWL, PNL, OL, Lazy, Free, X, title, xlabel, titleToSave):
+    plt.figure(1, figsize = (12,8), frameon = False)
+    plt.title(title, fontsize = 30)
+    plt.xlabel(xlabel, fontsize = 15)
+    
+    plt.plot(X, Sync,"-b", label = "Sync", marker = "*")
+    plt.plot(X, GL,"-g", label = "Global", marker = "+")
+    plt.plot(X, RWL,"-r", label = "RW", marker = "D")
+    plt.plot(X, PNL,"-c", label = "Node", marker = "<")
+    plt.plot(X, OL,"-m", label = "Optim", marker = "o")
+    plt.plot(X, Lazy,"-y", label = "Lazy", marker = ".")
+    plt.plot(X, Free,"-k", label = "Free", marker = "3")
+   
+    plt.legend(fontsize = 15, loc = 'upper right', ncol=2)
+
+    plt.savefig(titleToSave + ".png")
+    plt.show()
+    plt.close()
+
+
+#PLOT HIGH AND LOW CONTAINS RATIO
 
 matSync = np.loadtxt('../results_Synchronized.txt')
 matGL = np.loadtxt('../results_GlobalLock.txt')
@@ -10,50 +34,65 @@ matRWL = np.loadtxt('../results_GlobalRWLock.txt')
 matPNL = np.loadtxt('../results_PerNodeLock.txt')
 matOL = np.loadtxt('../results_OptimisticPerNodeLock.txt')
 matLazy = np.loadtxt('../results_LazyPerNodeLock.txt')
-#matFree = np.loadtxt('../results_LockFree.txt')
+matFree = np.loadtxt('../results_LockFree.txt')
 
 
-def splitToShow(M):
-    M_mean = np.mean(M, axis = 1)
-    M_contains_perc = np.split(M_mean, 2)
-    return M_contains_perc[0], M_contains_perc[1]
+contains_Sync = split_contains_ratio(matSync,2)
+contains_GL = split_contains_ratio(matGL,2)
+contains_RWL = split_contains_ratio(matRWL,2)
+contains_PNL = split_contains_ratio(matPNL,2)
+contains_OL = split_contains_ratio(matOL,2)
+contains_Lazy = split_contains_ratio(matLazy,2)
+contains_Free = split_contains_ratio(matFree,2)
 
-def plot(Sync, GL, RWL, PNL, OL, Lazy, Free, title, xlabel, ylabel):
-    plt.figure(1, figsize = (12,8), frameon = False)
-    plt.title(title, fontsize = 50)
-    plt.xlabel(xlabel, fontsize = 25)
-    plt.ylabel(ylabel, fontsize = 25)
-    
-    plt.plot(range(1,34,2), Sync,"-b", label = "Sync", marker = "*")
-    plt.plot(range(1,34,2), GL,"-g", label = "Global", marker = "+")
-    plt.plot(range(1,34,2), RWL,"-r", label = "RW", marker = "D")
-    plt.plot(range(1,34,2), PNL,"-c", label = "Node", marker = "<")
-    plt.plot(range(1,34,2), OL,"-m", label = "Optim", marker = "o")
-    plt.plot(range(1,34,2), Lazy,"-y", label = "Lazy", marker = ".")
-    plt.plot(range(1,34,2), Free,"-k", label = "Free", marker = "3")
-    
-    plt.legend(fontsize = 20)
-    
-    plt.savefig(title + ".png")
-    plt.show()
-    plt.close()
+plot_contains_ratio( contains_Sync[1], contains_GL[1], contains_RWL[1], contains_PNL[1], contains_OL[1], 
+     contains_Lazy[1], contains_Free[1], range(1,34,2), "Ops/sec(90% Reads)", "Threads", "Ops_sec_90_reads")
 
-contains50_Sync, contains10_Sync = splitToShow(matSync)
-contains50_GL, contains10_GL = splitToShow(matGL)
-contains50_RWL, contains10_RWL = splitToShow(matRWL)
-contains50_PNL, contains10_PNL = splitToShow(matPNL)
-contains50_OL, contains10_OL = splitToShow(matOL)
-contains50_Lazy, contains10_Lazy = splitToShow(matLazy)
-#contains50_Free, contains10_Free = splitToShow(matFree)
-
-plot( contains10_Sync, contains10_GL, contains10_RWL, contains10_PNL, contains10_OL, 
-     contains10_Lazy, range(1,18), "90% reads", "Threads", "Ops/sec")
-
-plot( contains50_Sync, contains50_GL, contains50_RWL, contains50_PNL, contains50_OL, 
-     contains50_Lazy, range(1, 18), "50% reads", "Threads", "Ops/sec")
+plot_contains_ratio( contains_Sync[0], contains_GL[0], contains_RWL[0], contains_PNL[0], contains_OL[0], 
+     contains_Lazy[0], contains_Free[0], range(1,34,2), "Ops/sec(50% Reads)", "Threads", "Ops_sec_50_reads")
 
     
     
+#PLOT AS CONTAINS INCREASES
+
+matSync = np.loadtxt('../results_reads_Synchronized.txt')
+matGL = np.loadtxt('../results_reads_GlobalLock.txt')
+matRWL = np.loadtxt('../results_reads_GlobalRWLock.txt')
+matPNL = np.loadtxt('../results_reads_PerNodeLock.txt')
+matOL = np.loadtxt('../results_reads_OptimisticPerNodeLock.txt')
+matLazy = np.loadtxt('../results_reads_LazyPerNodeLock.txt')
+matFree = np.loadtxt('../results_reads_LockFree.txt')
+
+
+contains_Sync = split_contains_ratio(matSync,10)
+contains_GL = split_contains_ratio(matGL,10)
+contains_RWL = split_contains_ratio(matRWL,10)
+contains_PNL = split_contains_ratio(matPNL,10)
+contains_OL = split_contains_ratio(matOL,10)
+contains_Lazy = split_contains_ratio(matLazy,10)
+contains_Free = split_contains_ratio(matFree,10)
+
+
+plot_contains_ratio(contains_Sync, contains_GL, contains_RWL, contains_PNL, contains_OL, 
+     contains_Lazy, contains_Free, range(0,100,10), "Ops/sec(32 Threads)", "% contains", "Ops_sec_32_threads")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     
     
