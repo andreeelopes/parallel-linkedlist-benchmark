@@ -1,7 +1,7 @@
 #!/bin/sh 
 java="java -enableassertions -verbose:gc -Xms1024M"
 
-warmup=1
+warmup=2000
 duration=${1}
 nr_threads=${2:-1}
 write_perc=${3:-50}

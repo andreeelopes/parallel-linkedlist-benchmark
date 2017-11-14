@@ -5,6 +5,7 @@ declare -a arr=("Synchronized" "GlobalLock" "GlobalRWLock" "PerNodeLock" "Optimi
 
 for i in "${arr[@]}"
 do
+	rm "results_$i.txt"
 	echo "$i"
 	#percentage of writes
 	for r in 50 10
