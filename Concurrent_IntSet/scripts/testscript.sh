@@ -6,10 +6,14 @@ declare -a arr=("Synchronized" "GlobalLock" "GlobalRWLock" "PerNodeLock" "Optimi
 for i in "${arr[@]}"
 do
 	rm "results/results_$i.txt"
-	echo "$i"
-	#percentage of writes
-	for r in 50 10
+done	
+
+#percentage of writes
+for r in 50 10
+do
+	for i in "${arr[@]}"
 	do
+		echo "$i"
 		#number of threads
 	    for n in 1 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32
 	    do
@@ -21,6 +25,5 @@ do
 	        echo "" >> "results/results_$i.txt"
 	    done
 	done
-
 done
 echo "Test concluded."
