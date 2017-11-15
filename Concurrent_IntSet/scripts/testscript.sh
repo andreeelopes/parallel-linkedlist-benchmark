@@ -20,7 +20,7 @@ do
 	    	#number of tries
 	        for j in 1 2 3 4 5
 	        do
-	        	bash ./scripts/intset.sh 3000 $n $r $i >> "results/results_$i.txt"       	
+	        	bash ./scripts/intset.sh 1000 $n $r $i >> "results/results_$i.txt"       	
 	        done
 	        echo "" >> "results/results_$i.txt"
 	    done
