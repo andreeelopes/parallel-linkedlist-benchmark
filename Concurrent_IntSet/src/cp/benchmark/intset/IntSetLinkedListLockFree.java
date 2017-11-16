@@ -67,7 +67,7 @@ public class IntSetLinkedListLockFree implements IntSet {
 				return false;
 			else {
 				Node succ = curr.next.getReference();
-				snip = curr.next.compareAndSet(succ, succ, false, true);
+				snip = curr.next.attemptMark(succ, true);
 				if(!snip)
 					continue;
 				pred.next.compareAndSet(curr, succ, false, false);
