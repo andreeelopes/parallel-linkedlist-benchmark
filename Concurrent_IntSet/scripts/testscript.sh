@@ -9,7 +9,7 @@ do
 done	
 
 #percentage of writes
-for r in 50 10 90
+for r in 50 10 90 1
 do
 	for i in "${arr[@]}"
 	do

@@ -8,7 +8,7 @@ do
 	rm "results/results_reads_$i.txt"
 	echo "$i"
 	#percentage of writes
-	for r in 0 10 20 30 40 50 60 70 80 90
+	for r in 0 5 10 20 30 40 50 60 70 80 90
 	do
 		#number of tries
         for j in 1 2 3 4 5
