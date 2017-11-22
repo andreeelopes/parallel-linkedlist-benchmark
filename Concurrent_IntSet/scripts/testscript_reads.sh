@@ -13,7 +13,7 @@ do
 		#number of tries
         for j in 1 2 3 4 5
         do
-        	bash ./scripts/intset.sh 1000 32 $r $i >> "results/results_reads_$i.txt"       	
+        	bash ./scripts/intset.sh 1000 16 $r $i >> "results/results_reads_$i.txt"       	
         done
         echo "" >> "results/results_reads_$i.txt"
 	done

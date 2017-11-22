@@ -9,13 +9,13 @@ do
 done	
 
 #percentage of writes
-for r in 50 10
+for r in 50 10 90
 do
 	for i in "${arr[@]}"
 	do
 		echo "$i"
 		#number of threads
-	    for n in 1 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32
+	    for n in 1 2 4 6 8 10 12 14 16
 	    do
 	    	#number of tries
 	        for j in 1 2 3 4 5
