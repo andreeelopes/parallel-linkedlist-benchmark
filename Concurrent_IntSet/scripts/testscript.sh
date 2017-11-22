@@ -5,11 +5,11 @@ declare -a arr=("Synchronized" "GlobalLock" "GlobalRWLock" "PerNodeLock" "Optimi
 
 for i in "${arr[@]}"
 do
-	rm "results/results_$i.txt"
+	rm "results/bigger_$i.txt"
 done	
 
 #percentage of writes
-for r in 50 10 90 1
+for r in 50 10 90
 do
 	for i in "${arr[@]}"
 	do
@@ -20,9 +20,9 @@ do
 	    	#number of tries
 	        for j in 1 2 3 4 5
 	        do
-	        	bash ./scripts/intset.sh 1000 $n $r $i >> "results/results_$i.txt"       	
+	        	bash ./scripts/intset.sh 1000 $n $r $i >> "results/bigger_$i.txt"       	
 	        done
-	        echo "" >> "results/results_$i.txt"
+	        echo "" >> "results/bigger_$i.txt"
 	    done
 	done
 done
