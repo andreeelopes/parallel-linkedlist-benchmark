@@ -122,11 +122,11 @@ public class IntSetLinkedListLazyPerNodeLock implements IntSet {
 	}
 
 	public boolean contains(int value) {
-		Node previous = m_first;
-		while (previous.getValue() < value) 
-			previous = previous.getNext();
+		Node node = m_first;
+		while (node.getValue() < value) 
+			node = node.getNext();
 
-		return (previous.getValue() == value && !previous.getMarked());
+		return (node.getValue() == node && !node.getMarked());
 	}
 
 	public void validate() {
