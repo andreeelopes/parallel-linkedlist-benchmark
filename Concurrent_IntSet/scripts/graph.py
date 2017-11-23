@@ -99,9 +99,9 @@ contains_OL = split_contains_ratio(matOL,11)
 contains_Lazy = split_contains_ratio(matLazy,11)
 contains_Free = split_contains_ratio(matFree,11)
 
-contains_perc = [0,5,10,20,30,40,50,60,70,80,90]
+writes_perc = [0,5,10,20,30,40,50,60,70,80,90]
 plot_contains_ratio(contains_Sync, contains_GL, contains_RWL, contains_PNL, contains_OL, 
-     contains_Lazy, contains_Free, contains_perc, "Ops/sec(16 Threads)", "% writes", "../results/Ops_sec_16_threads")
+     contains_Lazy, contains_Free, writes_perc, "Ops/sec(16 Threads)", "% writes", "../results/Ops_sec_16_threads")
 
 
 
