@@ -47,7 +47,7 @@ matLazy_smaller = np.loadtxt('../results/results_LazyPerNodeLock.txt') * 1000
 matFree_smaller = np.loadtxt('../results/results_LockFree.txt') * 1000
 
 #Parametres
-n_reads = [10, 90, 50, 99];
+n_reads = [50, 90, 10, 99];
 threads = [1,2,4,6,8,10,12,14,16]
 
 #MAKE AVERAGES AND SPLITS RESULTS
@@ -100,7 +100,6 @@ matLazy_smaller = np.loadtxt('../results/results_reads_LazyPerNodeLock.txt') * 1
 matFree_smaller = np.loadtxt('../results/results_reads_LockFree.txt') * 1000
 
 #Parametres
-n_reads = [10, 90, 50, 99];
 threads = [1,2,4,6,8,10,12,14,16]
 writes_perc = [5,10,20,30,40,50,60,70,80,90]
 
