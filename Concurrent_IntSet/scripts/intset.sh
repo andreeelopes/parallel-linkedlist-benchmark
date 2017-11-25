@@ -8,7 +8,7 @@ write_perc=${3:-50}
 list_impl=${4}
 
 value_range=262144
-initial_size=4000
+initial_size=256
 
 
 ${java} -cp bin cp.benchmark.Driver -d ${duration} -w ${warmup} -n ${nr_threads} \
